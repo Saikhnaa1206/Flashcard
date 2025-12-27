@@ -1,0 +1,36 @@
+generator client {
+  provider = "prisma-client-js"
+}
+datasource db {
+  provider = "postgresql"
+  url = env("DATABASE_URL")
+}
+model User {
+  id        String     @id @default(uuid())
+  nickname  String
+  lists     WordList[] 
+  updatedAt DateTime   @updatedAt
+  createdAt DateTime   @default(now())
+}
+
+model WordList {
+  id        String   @id @default(uuid())
+  words     Word[]
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+}
+
+model Word {
+  id          String   @id @default(uuid())
+  term        String
+  definition  String
+  translation String
+  wordListId  String
+  wordList    WordList @relation(fields: [wordListId], references: [id])
+  updatedAt   DateTime @updatedAt
+  createdAt   DateTime @default(now())
+}
+
+
