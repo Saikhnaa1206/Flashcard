@@ -7,12 +7,12 @@ const Page = () => {
   return (
     <div>
       {" "}
-      <div className="w-fit fixed top-0 right-0 flex gap-2">
+      <div className="w-fit fixed top-6 right-6 flex gap-3">
         <Button>Log in</Button>
         <Button>Sign up</Button>
       </div>
-      <div className="w-100 h-100 flex flex-col justify-center items-center">
-        <Card className="w-[500px] h-[300px]">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-6">
+        <Card className="max-w-sm w-full p-6">
           {flip == false ? (
             <CardContent onClick={() => setFlip(true)}>Apple</CardContent>
           ) : (
@@ -28,6 +28,7 @@ const Page = () => {
           )}
         </Card>
       </div>
+      <div className="fixed top-6 left-6">Create your own flashcards!</div>
     </div>
   );
 };
