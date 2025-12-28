@@ -6,8 +6,9 @@ datasource db {
 }
 model User {
   id        String     @id @default(uuid())
-  nickname  String
+  nickname  String @unique
   lists     WordList[] 
+  password  String
   updatedAt DateTime   @updatedAt
   createdAt DateTime   @default(now())
 }

@@ -1,20 +1,48 @@
 import { prisma } from "../../../lib/prisma";
 import { NextResponse } from "next/server";
-
+import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 export const POST = async (req: Request) => {
   try {
-    const { nickname } = await req.json();
+    console.log("hello");
+    const { nickname, password } = await req.json();
+    const hashedPass = await bcrypt.hash(password, 10);
+    console.log(hashedPass);
     const newUser = await prisma.user.create({
       data: {
         nickname,
       },
     });
-    console.log();
-    return NextResponse.json(newUser, { status: 201 });
-  } catch (error) {
-    console.error(error);
+
+    const secret = process.env.JWT_SECRET;
+    if (!secret) {
+      throw new Error("JWT_SECRET is not defined in .env");
+    }
+
+    const token = jwt.sign(
+      {
+        userId: newUser.id,
+        nickname: newUser.nickname,
+      },
+      secret,
+      { expiresIn: "24h" }
+    );
+
     return NextResponse.json(
-      { error: "An error occurred while creating the user." },
+      {
+        user: {
+          id: newUser.id,
+          nickname: newUser.nickname,
+        },
+        token,
+      },
+      { status: 201 }
+    );
+  } catch (error: any) {
+    console.error("Signup Error:", error);
+
+    return NextResponse.json(
+      { error: "Хэрэглэгч үүсгэхэд алдаа гарлаа." },
       { status: 500 }
     );
   }
