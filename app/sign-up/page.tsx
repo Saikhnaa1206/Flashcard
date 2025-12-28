@@ -1,14 +1,12 @@
 "use client";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
 const Page = () => {
-  const [signUp, setSignUp] = useState<boolean>(false);
   const requestToSignUp = async () => {
-    const response = await fetch("@/api/create-user");
+    const response = await fetch("/api/create-user");
+    console.log(response);
     const data = await response.json();
     console.log(data);
-    setSignUp(true);
   };
 
   return (

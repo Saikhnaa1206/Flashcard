@@ -2,9 +2,10 @@ import { prisma } from "../../../lib/prisma";
 import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+console.log("hello");
+
 export const POST = async (req: Request) => {
   try {
-    console.log("hello");
     const { nickname, password } = await req.json();
     const hashedPass = await bcrypt.hash(password, 10);
     console.log(hashedPass);
